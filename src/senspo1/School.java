@@ -37,18 +37,18 @@ public class School {
     }
     
     
-    public School(int aantalStudenten){
-        this.aantalStudenten =aantalStudenten;
-        s = new Student[aantalStudenten];
-    }
-//    public School(int aantalStudenten) {
-//        this.aantalStudenten = aantalStudenten;
+//    public School(int aantalStudenten){
+//        this.aantalStudenten =aantalStudenten;
 //        s = new Student[aantalStudenten];
-//        for (int i = 0; i < aantalStudenten; i++) {
-//            s[i] = (new Student(GenerateMark(), studentnr));
-//            studentnr++;
-//        }
 //    }
+    public School(int aantalStudenten) {
+        this.aantalStudenten = aantalStudenten;
+        s = new Student[aantalStudenten];
+        for (int i = 0; i < aantalStudenten; i++) {
+            s[i] = (new Student(GenerateMark(), studentnr));
+            studentnr++;
+        }
+    }
 
     public School() {
 
