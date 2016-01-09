@@ -9,7 +9,7 @@ package senspo1;
  *
  * @author Sven
  */
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class BST<Key extends Comparable<Key>, Value> {
@@ -17,16 +17,25 @@ public class BST<Key extends Comparable<Key>, Value> {
     private Node root; // root of BST
 
     private class Node {
-
+        
+        // Students mark
         private Key key; // key
-        private List<Value> vals; // associated values
-        private Node left, right; // links to subtrees
-        private int N; // # nodes in subtree rooted here
-
+        //Students LDAP
+        private Value value;
+        // Left and Right nodes
+        private Node left, right;
+        //Amount of nodes
+        private int N;
+        
+        //List for Values that accure multiple times.
+        private List<Value> doubleValues;
+        
+        
         public Node(Key key, Value val, int N) {
             this.key = key;
-            this.vals.add(val);
+            this.value = value;
             this.N = N;
+            this.doubleValues = new ArrayList<>();
         }
     }
 
@@ -42,23 +51,38 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    public Value get(Key key) {
-        return get(root, key);
+    public List<Value> get(Key key) {
+        List<Value> values = new ArrayList<>();
+        Node temp;
+        temp = get(root, key);
+        
+        if(temp.doubleValues.size() == 0) {
+            values.add(temp.value);
+        } else {
+            values.add(temp.value);
+            
+            for (Value value : temp.doubleValues) {
+                values.add(value);
+            }
+        }
+        return values;
     }
 
-    private Value get(Node x, Key key) { // Return value associated with key in the subtree rooted at x;
-// return null if key not present in subtree rooted at x.
+    private Node get(Node x, Key key) { 
+        Node temp = null;
+        
         if (x == null) {
-            return null;
+            temp = null;
         }
         int cmp = key.compareTo(x.key);
         if (cmp < 0) {
-            return get(x.left, key);
+            temp =  get(x.left, key);
         } else if (cmp > 0) {
-            return get(x.right, key);
+            temp = get(x.right, key);
         } else {
-            return x.val;
+            temp = x;
         }
+        return temp;
     }
 
     public void put(Key key, Value val) { // Search for key. Update value if found; grow table if new.
@@ -77,10 +101,29 @@ public class BST<Key extends Comparable<Key>, Value> {
         } else if (cmp > 0) {
             x.right = put(x.right, key, val);
         } else {
-            x.val = val;
+            x.doubleValues.add(val);
         }
-        x.N = size(x.left) + size(x.right) + 1;
+        x.N = size(x.left) + size(x.right) + 1 + x.doubleValues.size();
+        
         return x;
+    }
+    
+    public int rank (Key key) {
+        return rank(key, root);
+    }
+    
+    private int rank(Key key, Node node){
+        if (node == null) {
+            return 0;
+        }
+        if (key.compareTo(node.key) < 0) {
+            return rank(key, node.left);
+        } else if (key.compareTo(node.key) > 0) {
+            return 1 + size(node.left) + rank(key, node.right)
+                    + node.doubleValues.size();
+        } else {
+            return size(node.left);
+        }
     }
 
 }
