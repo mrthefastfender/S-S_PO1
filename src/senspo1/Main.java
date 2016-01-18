@@ -19,17 +19,28 @@ public class Main {
         // print de studenten en de cijfers
         school1.print();
 
+        // maak een mergesort aan om het geheel te sorteren
         MergeSort m = new MergeSort();
 
-        System.out.println("________________________________\n");
-
-        m.sort(school1.s);
-
-        school1.print();
-
+        // format voor output
         System.out.println("________________________________\n");
         
-        BST b = new BST();
+        // sorteer de lijst met studenten van de school
+        m.sort(school1.s);
+
+        // print de gesorteerde lijst en de cijfers
+        school1.print();
+        
+        // format voor output
+        System.out.println("________________________________\n");
+        
+        // maak een binary search tree aan om de studenten in op te slaan
+        // met de fore worden alle studenten op basis van het cijfer en
+        // het ldap in de bst gestopt
+        BST bst = new BST();
+        for (Student s : school1.s) {
+            bst.put(s.getCijfer(), s.getStudentnummer());
+        }
  
     }
 
